@@ -1,0 +1,51 @@
+<!-- extend from base layout -->
+{% extends 'base.html' %}
+
+{% block content %}
+    <script type="text/javascript">
+    function set_openid(openid, pr)
+    {
+        u = openid.serach
+        if (u != -1) {
+            //openid requires username
+            openid = openid.substr(0, u)
+        }
+        form = document.forms['login'];
+        form.elements['nickname'].value = pr
+        form.elements['password'].value = '_'
+        form.elements['openid'].value = openid
+        form.elements['use_openid'].value = true
+        form.submit()
+    }
+    </script>
+    {% include 'flash.html' %}
+    <div class="well">
+      <h3>Sign in</h3>
+      <form class="form" action="" method="post" name="login">
+          {{ form.hidden_tag() }}
+              Please enter your nickname:<br>
+              {{ form.nickname(size=30) }}<br>
+              {% for error in form.nickname.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+              {% endfor %}</br>
+              Please enter your password:<br>
+              {{ form.password(size=30) }}<br>
+              {% for error in form.password.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+              {% endfor %}<br>
+              <input type="hidden" name="use_openid">
+              <input type="hidden" name="openid">
+              Or login with: <br>
+              | {% for pr in providers %}
+                <a href="javascript:set_openid('{{ pr.url }}', '{{ pr.name }}');">{{ pr.name }}</a> |
+                {% endfor %}
+                <a href="{{ url_for('oauth_authorize', provider='facebook')}}">Facebook</a>|
+                <!--
+                <a href="{{ url_for('oauth_authorize', provider='twitter')}}">Twitter</a>|
+                -->
+          </p>
+          <p>{{ form.remember_me }} Remember Me</p>
+          <p><input type="submit" value="Sign In"></p>
+      </form>
+      <p>Don't have an account? <a href="{{ url_for('signup') }}">Create one</a>! </p>
+{% endblock %}

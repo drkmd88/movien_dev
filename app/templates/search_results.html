@@ -1,0 +1,39 @@
+<!-- extend search_base layout -->
+{% extends "search_base.html" %}
+
+{% block content %}
+  {% if user_results %}
+  <h3>
+    <b>Users:</b>
+  </h3>
+  <p>
+    {% for user in user_results %}
+        {% include 'user_result.html' %}
+    {% endfor %}
+  </p>
+  <hr>
+  {% endif %}
+  {% if director_results %}
+  <h3>
+      <b>Directors: </b>
+  </h3>
+  <p>
+      {% for director in director_results.items %}
+          {% include 'director_result.html' %}
+      {% endfor %}
+
+        <ul class="pager">
+            {% if director_results.has_prev %}
+            <li class="previous"><a href="{{ url_for('search_results', page=director_results.prev_num) }}">&lt;&lt; Previous</a></li>
+            {% else %}
+            <li class="previous disabled"><a href="#">Previous</a></li>
+            {% endif %}
+            {% if director_results.has_next %}
+            <li class="next"><a href="{{ url_for('search_results', page=director_results.next_num) }}">Next&gt;&gt;</a></li>
+            {% else %}
+            <li class="next disabled"><a href="#">Next</a></li>
+            {% endif %}
+        </ul>
+  </p>
+  {% endif %}
+{% endblock %}

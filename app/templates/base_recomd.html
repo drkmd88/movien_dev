@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Content -->
+    {% if title %}
+    <title>{{ title }} - MovIen</title>
+    {% else %}
+    <title>Welcome to MovIen</title>
+    {% endif %}
+
+
+    <!-- Bootstrap & jquery -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/static/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/moment.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- D3 -->
+    <style>
+    .axis--x path {
+      display: none;
+    }
+
+    .line{
+      fill: none;
+      stroke: steelblue;
+      stroke-width: 1.5px;
+    }
+    </style>
+    
+
+    <!-- Recomd style & script -->
+    <script src="static/js/flotr2.min.js"></script>
+    <script>
+    var hasGenres = {{passValue["visible"]["genres"]}},
+        hasRating = {{passValue["visible"]["rating"]}},
+        hasProd = {{passValue["visible"]["prod"]}},
+        hasBudget = {{passValue["visible"]["budget"]}},
+        hasProfit = {{passValue["visible"]["profit"]}},
+        hasYear = {{passValue["visible"]["year"]}};
+
+    var names = [
+        [0,"{{passValue["name"][0]}}"], 
+        [1,"{{passValue["name"][1]}}"], 
+        [2,"{{passValue["name"][2]}}"], 
+        [3,"{{passValue["name"][3]}}"]
+    ];
+    
+    var genres_type = "{{passValue["genres_type"]}}";    
+    var genres = [[
+                [0,{{passValue["genres"][0]}}],
+                [1,{{passValue["genres"][1]}}],
+                [2,{{passValue["genres"][2]}}],
+                [3,{{passValue["genres"][3]}}]
+               ]];
+
+    var rating = [[
+                  [0,{{passValue["rating"][0]}}],
+                  [1,{{passValue["rating"][1]}}],
+                  [2,{{passValue["rating"][2]}}],
+                  [3,{{passValue["rating"][3]}}]
+                  ]];
+
+    var prod = [[
+                [0,{{passValue["prod"][0]}}],
+                [1,{{passValue["prod"][1]}}],
+                [2,{{passValue["prod"][2]}}],
+                [3,{{passValue["prod"][3]}}]
+                ]];
+                
+    var budget = [[
+                    [0,{{passValue["budget"][0]}}],
+                    [1,{{passValue["budget"][1]}}],
+                    [2,{{passValue["budget"][2]}}],
+                    [3,{{passValue["budget"][3]}}]
+                    ]];
+                    
+    var profit = [[
+                    [0,{{passValue["profit"][0]}}],
+                    [1,{{passValue["profit"][1]}}],
+                    [2,{{passValue["profit"][2]}}],
+                    [3,{{passValue["profit"][3]}}]
+                    ]];
+
+    var year_range = "{{passValue["year_range"]}}";
+    var year = [[
+                [0,{{passValue["year"][0]}}],
+                [1,{{passValue["year"][1]}}],
+                [2,{{passValue["year"][2]}}],
+                [3,{{passValue["year"][3]}}]
+                ]];
+      
+    window.onload = function() {
+        Flotr.draw(
+            document.getElementById("1"), genres, 
+            {
+                title: "Genres: "+genres_type,
+                bars: {
+                    show: true,
+                    barWidth: 0.5
+                },
+                yaxis: {
+                    min: 0,
+                    tickDecimals: 0
+                },
+                xaxis: {
+                    ticks: names
+                },
+                grid: {
+                    horizontalLines: false,
+                    verticalLines: false
+                }
+            }
+        );
+        
+        Flotr.draw(
+            document.getElementById("2"),rating,
+            {
+                title:"Average Movie Rating:",
+                bars:{
+                    show:true,
+                    barWidth: 0.5
+                },
+                yaxis:{
+                    min:0,
+                    tickDecimals: 0
+                },
+                xaxis:{
+                    ticks:names
+                },
+                grid: {
+                    horizontalLines: false,
+                    verticalLines: false
+                }
+            }
+        );
+        
+        Flotr.draw(
+            document.getElementById("3"),prod,
+            {
+                title:"Movie Directed:",
+                bars:{
+                    show:true,
+                    barWidth: 0.5
+                },
+                yaxis:{
+                    min:0,
+                    tickDecimals: 0
+                },
+                xaxis:{
+                    ticks:names
+                },
+                grid: {
+                    horizontalLines: false,
+                    verticalLines: false
+                }
+            }
+        );  
+        
+        Flotr.draw(
+            document.getElementById("4"),budget,
+            {
+                title:"Average Movie Budget(Million):",
+                bars:{
+                    show:true,
+                    barWidth: 0.5
+                },
+                yaxis:{
+                    min:0,
+                    tickDecimals: 0,
+                    base: Math.E
+                },
+                xaxis:{
+                    ticks:names
+                },
+                grid: {
+                    horizontalLines: false,
+                    verticalLines: false
+                }
+            }
+        );
+        
+        Flotr.draw(
+            document.getElementById("5"),profit,
+            {
+                title:"Average Movie Profit Ratio",
+                bars:{
+                    show:true,
+                    barWidth: 0.5
+                },
+                yaxis:{
+                    min:0,
+                    tickDecimals: 0
+                },
+                xaxis:{
+                    ticks:names
+                },
+                grid: {
+                    horizontalLines: false,
+                    verticalLines: false
+                }
+            }
+        );
+        
+        Flotr.draw(
+            document.getElementById("6"),year,
+            {
+                title:"Movie Directed "+year_range,
+                bars:{
+                    show:true,
+                    barWidth: 0.5
+                },
+                yaxis:{
+                    min:0,
+                    tickDecimals: 0
+                },
+                xaxis:{
+                    ticks:names
+                },
+                grid: {
+                    horizontalLines: false,
+                    verticalLines: false
+                }
+            }
+        );     
+    }
+    </script>
+  </head>
+  <body>
+    <div class="container"> 
+      {% include 'nav_bar.html' %}
+        <div class="well well-large span8">
+              <div class="row">
+                  <div class="span7">
+                  <h1>Check your results!</h1>
+                  <hr>
+                  </div>
+              </div>
+              <div class="row">
+                    <div class="span3">
+                        {% for director in directors %}
+                            {% include 'director_result.html' %}
+                        {% endfor %}
+                    </div>
+                    <div class="span5">
+                        {% if show_list[0] != 'none' %}
+                        <div class="genres", id="1", style="width:100%; height:200px;"></div>
+                        {% endif %}
+                        {% if show_list[1] %}
+                        <div class="rating", id="2", style="width:100%; height:200px;"></div>
+                        {% endif %}
+                        {% if show_list[2] %}
+                        <div class="prod", id="3", style="width:35%; height:200px;"></div>
+                        {% endif %}
+                        {% if show_list[3] %}
+                        <div class="bugdet", id="4", style="width:35%; height:200px;"></div>
+                        {% endif %}
+                        {% if show_list[4] %}
+                        <div class="profit", id="5", style="width:35%; height:200px;"></div>
+                        {% endif %}
+                        {% if show_list[5] != 'none' %}
+                        <div class="year", id="6", style="width:35%; height:200px;"></div>
+                        {% endif %}
+                    </div>
+          </div>
+        </div>
+                <div class="span3">
+                    {% include 'recommand_form.html' %}
+                    <svg width="350" height="250"></svg>
+                    <script src="https://d3js.org/d3.v4.min.js"></script>
+                    <script src="http://fa16-cs411-38.cs.illinois.edu:5000/static/js/app2.js"></script>
+                    <a href="{{ url_for('data_pre') }}">See more</a>
+                </div>
+          </div>
+      </div>
+    </div>
+  </body>
+</html>

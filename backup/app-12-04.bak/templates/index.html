@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% include 'flash.html' %}
+    {% if g.user.is_authenticated %}
+    <h1>Hello, {{ user.nickname }}!</h1>
+    <div class="well">
+        <form class="form" action="" method="post" name="post">
+          {{ form.hidden_tag() }}
+          <div class="control-group{% if form.post.errors %} error{% endif %}">
+            <label class="control-label" for="post"><b>What's going on?</b></label>
+            <div class="controls">
+                {{ form.post(cols=32, rows=4, maxlength=140) }}<br>
+                {% for error in form.post.errors %}
+                  <span class="help-inline">[{{ error }}]</span><br>  
+                {% endfor %}
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="private">show this post to </label>
+            <div class="controls">
+                {{ form.private }}
+                {% for error in form.private.errors %}
+                  <span class="help-inline">[{{ error }}]</span><br>  
+                {% endfor %}
+            </div>
+          </div>
+          <div class="control-group">
+            <div class="controls">
+                <input class="btn btn-primary" type="submit" value="Post">
+            </div>
+          </div>
+        </form>
+    </div>
+    {% else %}
+    <h1>Things around you</h1>
+    {% endif %}
+    {% for post in posts.items %}
+      {%  include 'post.html' %}
+    {% endfor %}
+    <ul class="pager">
+        {% if posts.has_prev %}
+        <li class="previous"><a href="{{ url_for('index', page=posts.prev_num) }}">&lt;&lt; Newer posts</a></li>
+        {% else %}
+        <li class="previous disabled"><a href="#">Newer posts</a></li>
+        {% endif %}
+        {% if posts.has_next %}
+        <li class="next"><a href="{{ url_for('index', page=posts.next_num) }}">Older posts&gt;&gt;</a></li>
+        {% else %}
+        <li class="next disabled"><a href="#">Older posts</a></li>
+        {% endif %}
+    </ul>
+{% endblock %}

@@ -1,0 +1,24 @@
+<table class="table table-hover">
+    <tr valign="top">
+      <td width="70px">
+        <a href="{{ url_for('user', nickname=user.nickname) }}"><img src="{{ user.avatar(70) }} /"></a>
+      </td>
+      <td>
+        <b><big><a href="{{ url_for('user', nickname=user.nickname) }}">{{ user.nickname }}</a></big></b>{% if user.verified %}<i><small> Verified</small></i>{% endif %}
+        {% if user.about_me %}
+        <p>{{ user.about_me }}</p>
+        {% else %}
+        <p>This user is too lazy to leave something</p>
+        {% endif %}
+        {{ user.followers.count()-1 }} followers |
+        {% if user.id ==g.user.id %}
+          <a href="{{ url_for('edit') }}">Edit your profile</a>
+        {% elif not g.user.is_following(user) %}
+          <a href="{{ url_for('follow', nickname=user.nickname) }}">Follow</a>
+        {% else %}
+          <a href="{{ url_for('unfollow', nickname=user.nickname) }}">Unfollow</a>
+        {% endif %}
+        
+      </td>
+    </tr>
+</table>

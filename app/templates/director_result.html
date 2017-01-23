@@ -1,0 +1,23 @@
+<table class="table table-hover">
+    <tr valign="top">
+      <td>
+        {% if director.social_account %}
+            <b><big><a href="{{ url_for('user', nickname=director.social_account.nickname) }}">{{ director.name }}</a></big></b><i><small> Verified</small></i>
+        {% else %}    
+            <b><big><a href="{{ url_for('director_page', id=director.id) }}">{{ director.name }}</a></big></b>
+        {% endif %}
+        <br>
+        <br>
+        {% if director.movie_by_rating() %}
+        <div class="span">
+        Most Popular Movie:
+        </div>
+        <div class="span">
+        <b><a href="{{ director.movie_by_rating().limit(1)[0].movie_imdb_link }}">{{ director.movie_by_rating().limit(1)[0].movie_title }}</a></b> <br> <b>Rating</b>: {{ director.movie_by_rating().limit(1)[0].imdb_score }}
+        {% else %}
+        This director is too lazy to do something
+        </div>
+        {% endif %}
+      </td>
+    </tr>
+</table>

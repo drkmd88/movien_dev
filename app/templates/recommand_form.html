@@ -1,0 +1,35 @@
+<div class='well'>
+    <form class="form" action="{{ url_for('recomd') }}" method="post" name="recom_form">
+        {{ g.recom_form.hidden_tag() }}
+        <h2>Want a Director?</h2>
+        <div class="control-group">
+            <label class="control-label" for="genre">Genre:</label>
+            <div class="controls">
+                {{ g.recom_form.genres }}
+            </div>
+
+            <a href="#advfunc" data-toggle="collapse">Advance</a>
+
+            <div id="advfunc" class="collapse">
+                <label class="control-label" for="year">Year:</label>
+                <div class="controls">
+                    {{ g.recom_form.year }}
+                </div>
+                <div class="span2">
+                    Movie Rating {{ g.recom_form.avgrating }}
+                </div>
+                <div class="span2">
+                    Productivity {{ g.recom_form.prod }}
+                </div>
+                <div class="span2">
+                    Movie Budget {{ g.recom_form.budget }}
+                </div>
+                <div class="span2">
+                    Profitability {{ g.recom_form.profit }}
+                </div>
+            </div>
+            <br>
+            <input class="btn btn-primary" type='submit' value="Get Me!">
+        </div>
+    </form>
+</div>

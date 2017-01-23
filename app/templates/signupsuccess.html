@@ -1,0 +1,13 @@
+<!-- extend from base layout -->
+{% extends 'base.html' %}
+
+{% block content %}
+
+<p>Signup success! you will automatically jump to homepage in 3 seconds...</p>
+<script>
+    var timer = setTimeout(function(){
+            window.location='{{ url_for('index') }}'
+        }, 3000);
+</script>
+
+{% endblock %}

@@ -1,0 +1,63 @@
+<!-- extend base layout -->
+{% extends "base_basic.html" %}
+
+{% block content %}
+    {% include 'flash.html' %}
+    <div class="well well-large">
+        <h1>{{ director.name }}</h1>
+    </div>
+        <div class="well well-large">
+            <div class="row">
+                <div class="span4">
+                    <div class="row">
+                        <div class="well span3 m-x-auto">
+                            <h3> Basic </h3>
+                            <b>Gender:</b>
+                            {% if director.gender %}
+                                {{ director.gender }}
+                            {% else %}
+                                N/A
+                            {% endif %}
+                            <hr>
+                            <b>Birthday:</b>
+                            {% if director.birthday %}
+                                {{ director.birthday }}
+                            {% else %}
+                                N/A
+                            {% endif %}
+                            <hr>
+                            <b>Hometown:</b>
+                            {% if director.hometown %}
+                                {{ director.hometown }}
+                            {% else %}
+                                N/A
+                            {% endif %}
+                            <hr>
+                            <b>Height:</b>
+                            {% if director.height %}
+                                {{ director.height }}
+                            {% else %}
+                                N/A
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="well span3">
+                            <h3> Movies </h3>
+                            {% for movie in director.movie_by_year().limit(5) %}
+                                <h4><a href="{{ movie.movie_imdb_link }}">{{ movie.movie_title }}</a></h4>
+                                <b>Year</b>: {{movie.year}} | <b>Rating</b>: {{ movie.imdb_score }}
+                                <hr>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="well span7">
+                    <div class="well-small">
+                        <h3> Biography </h3>
+                        {{ director.biography }}
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endblock %}

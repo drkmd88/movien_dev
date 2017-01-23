@@ -1,0 +1,138 @@
+<!-- extend base layout -->
+{% extends "base_basic.html" %}
+
+{% block content %}
+    {% include 'flash.html' %}
+    <div class="well well-large">
+        <div class="pull-right">
+             <img src="{{ user.avatar(128) }}">
+        </div>
+        <h1>{{ user.nickname }} {% if user.verified %} <i><small>Verified</small></i> {% endif %}</h1>
+        {% if user.id ==g.user.id %}
+          <a href="{{ url_for('edit') }}">Edit your profile</a>
+        {% elif not g.user.is_following(user) %}
+          <a href="{{ url_for('follow', nickname=user.nickname) }}">Follow!</a>
+        {% else %}
+          <a href="{{ url_for('unfollow', nickname=user.nickname) }}">Unfollow</a>
+        {% endif %}
+        <div class="well-small">
+            {% if user.about_me %}
+                <p>{{ user.about_me }}</p>
+            {% else %}
+                <p> Too lazy to leave something...</p>
+            {% endif %}
+        </div>
+        {% if user.last_seen %}<p><i>Last seen on: {{ momentjs(user.last_seen).fromNow() }}</i></p>{% endif %}
+        <p>
+        <a href="{{ url_for('user', nickname=user.nickname, content_type='follow') }}">Follow</a> {{ user.followed.count()-1 }} | 
+        <a href="{{ url_for('user', nickname=user.nickname, content_type='follower') }}">Follower</a> {{ user.followers.count()-1 }} | 
+        <a href="{{ url_for('user', nickname=user.nickname, content_type='post_self') }}">Post</a> {{ user.posts.count() }} | 
+        <a href="{{ url_for('user', nickname=user.nickname, content_type='post_liked') }}">Like</a> {{ user.liked.count() }}
+        </p>
+    </div>
+    {% if user.verified %}
+        <div class="well well-large">
+            <div class="row">
+                <div class="span4">
+                    <div class="row">
+                        <div class="well span3 m-x-auto">
+                            <h3> Basic </h3>
+                            <b>Gender:</b>
+                            {% if user.verified.gender %}
+                                {{ user.verified.gender }}
+                            {% else %}
+                                N/A
+                            {% endif %}
+                            <hr>
+                            <b>Birthday:</b>
+                            {% if user.verified.birthday %}
+                                {{ user.verified.birthday }}
+                            {% else %}
+                                N/A
+                            {% endif %}
+                            <hr>
+                            <b>Hometown:</b>
+                            {% if user.verified.hometown %}
+                                {{ user.verified.hometown }}
+                            {% else %}
+                                N/A
+                            {% endif %}
+                            <hr>
+                            <b>Height:</b>
+                            {% if user.verified.height %}
+                                {{ user.verified.height }}
+                            {% else %}
+                                N/A
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="well span3">
+                            <h3> Movies </h3>
+                            {% for movie in user.verified.movie_by_year().limit(5) %}
+                                <h4><a href="{{ movie.movie_imdb_link }}">{{ movie.movie_title }}</a></h4>
+                                <b>Year</b>: {{movie.year}} | <b>Rating</b>: {{ movie.imdb_score }}
+                                <hr>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="well span7">
+                    <div class="well-small">
+                        <h3> Biography </h3>
+                        {{ user.verified.biography }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    <h3>
+      {% if user.id != g.user.id %}
+      {{ user.nickname }}'s
+      {% endif %}
+      {% if content_type=="post_self" %}
+          Posts
+      {% elif content_type=="post_liked" %}
+          Likes
+      {% elif content_type=="follow" %}
+          Follows
+      {% elif content_type=="follower"%}
+          Followers
+      {% endif %}
+    </h3>
+    {% if content_page=="post" %}
+        {% for post in content.items %}
+          {%  include 'post.html' %}
+        {% endfor %}
+        <ul class="pager">
+            {% if content.has_prev %}
+            <li class="previous"><a href="{{ url_for('user',nickname=g.user.nickname, page=content.prev_num) }}">Newer posts</a></li>
+            {% else %}
+            <li class="previous disabled"><a href="#">Newer posts</a></li>
+            {% endif %}
+            {% if content.has_next %}
+            <li class="next"><a href="{{ url_for('user',nickname=g.user.nickname, page=content.next_num) }}">Older posts</a></li>
+            {% else %}
+            <li class="next disabled"><a href="#">Older posts</a></li>
+            {% endif %}
+        </ul>
+    {% elif content_page=="user" %}
+        {% for user in content.items %}
+          {% if user.id != g.user.id %}
+              {%  include 'user_result.html' %}
+          {% endif %}
+        {% endfor %}
+        <ul class="pager">
+            {% if content.has_prev %}
+            <li class="previous"><a href="{{ url_for('user',nickname=g.user.nickname, page=content.prev_num) }}">Last Page</a></li>
+            {% else %}
+            <li class="previous disabled"><a href="#">Last Page</a></li>
+            {% endif %}
+            {% if content.has_next %}
+            <li class="next"><a href="{{ url_for('user',nickname=g.user.nickname, page=content.next_num) }}">Next Page</a></li>
+            {% else %}
+            <li class="next disabled"><a href="#">Next Page</a></li>
+            {% endif %}
+        </ul>
+    {% endif %}
+{% endblock %}

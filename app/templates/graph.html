@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+
+{% extends "base_basic.html" %}
+
+{% block content %}
+
+<style>
+h1 {
+    margin: 1em 0 0 0;
+    color: #2e484c;
+    font-family: 'Julius Sans One', sans-serif;
+    font-size: 1.8em;
+    text-transform: uppercase;
+}
+a:link {
+    font-weight: bold;
+    text-decoration: none;
+    color: #0d8ba1;
+}
+a:visited {
+    font-weight: bold;
+    text-decoration: none;
+    color: #1a5952;
+}
+a:hover, a:focus, a:active {
+    text-decoration: underline;
+    color: #9685BA;
+}
+p {
+    font: "Libre Baskerville", sans-serif;
+    text-align: justify;
+    text-justify: inter-word;
+    width: 80%;
+    max-width: 800;
+}
+
+</style>
+
+<head>
+    <meta charset='utf-8' />
+    {{ js_resources | safe }}
+    {{  css_resources | safe }}
+    {{ script | safe }}
+
+
+</head>
+
+<body>
+
+<h1>An Interactive Explorer for IMDB Data</h1>
+
+{{div | safe }}
+
+</body>
+
+</html>
+
+{% endblock %}

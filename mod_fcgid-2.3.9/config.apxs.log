@@ -1,0 +1,11 @@
+Detecting features
+Makefile:34: /rules.mk: No such file or directory
+make: *** No rule to make target `/rules.mk'.  Stop.
+Makefile:34: /rules.mk: No such file or directory
+make: *** No rule to make target `/rules.mk'.  Stop.
+Makefile:34: /rules.mk: No such file or directory
+make: *** No rule to make target `/rules.mk'.  Stop.
+Makefile:34: /rules.mk: No such file or directory
+make: *** No rule to make target `/rules.mk'.  Stop.
+Makefile:34: /rules.mk: No such file or directory
+make: *** No rule to make target `/rules.mk'.  Stop.

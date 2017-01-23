@@ -1,0 +1,9 @@
+<div class="well">
+    <h2>TOP Directors</h2>
+    <h3>of the day</h3>
+    {% for rank in g.ranking.general_ranking().limit(10) %}
+        {% set director = rank.director %}
+        {% include 'director_result.html' %}
+    {% endfor %}
+</div>
+

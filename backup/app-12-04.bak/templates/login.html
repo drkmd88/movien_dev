@@ -1,0 +1,77 @@
+<!-- extend from base layout -->
+{% extends 'base_basic.html' %}
+
+{% block content %}
+    <script type="text/javascript">
+    function set_openid(openid, pr)
+    {
+        u = openid.serach
+        if (u != -1) {
+            //openid requires username
+            openid = openid.substr(0, u)
+        }
+        form = document.forms['login'];
+        form.elements['nickname'].value = pr
+        form.elements['password'].value = '_'
+        form.elements['openid'].value = openid
+        form.elements['use_openid'].value = true
+        form.submit()
+    }
+    </script>
+    {% include 'flash.html' %}
+    <div class="well">
+      <h3>Sign in</h3>
+      <form class="form-horizontal" action="" method="post" name="login">
+        <div class="form-group{% if form.nickname.errors  %} error{% endif %}">
+          {{ form.hidden_tag() }}
+          <label class="control-label" for="nickname"><b>Nickname:</b></label>
+          <div class="controls">
+              {{ form.nickname(size=30, placeholder="Kevin") }}
+              {% for error in form.nickname.errors %}
+                <span class="help-inline">[{{ error }}]</span>
+              {% endfor %}
+          </div>
+        </div>
+        <br>
+        <div class="form-group{% if form.password.errors %} error{% endif %}">
+
+          <label class="control-label" for="password"><b>Pssword:</b></label>
+          <div class="controls">
+              {{ form.password(size=30) }}
+              {% for error in form.password.errors %}
+                <span class="help-inline">[{{ error }}]</span>
+              {% endfor %}
+          </div>
+        </div>
+        <br>
+        <div class="form-group">
+              <input type="hidden" name="use_openid">
+              <input type="hidden" name="openid">
+              <b>Or login with:</b>
+              <div class="controls">
+              | {% for pr in providers %}
+                <a href="javascript:set_openid('{{ pr.url }}', '{{ pr.name }}');">{{ pr.name }}</a> |
+                {% endfor %}
+                <a href="{{ url_for('oauth_authorize', provider='facebook')}}">Facebook</a>|
+                <!--
+                <a href="{{ url_for('oauth_authorize', provider='twitter')}}">Twitter</a>|
+                -->
+              </div>
+          </div>
+          <br>
+          <div class="form-group">
+              <div class="controls">
+                  {{ form.remember_me }} Remember Me
+              </div>
+          </div>
+          <br>
+          <div class="from-group">
+              <div class="controls">
+                  <input class="btn btn-primary" type="submit" value="Sign In">
+              </div>
+        </div>
+        <br>
+      Don't have an account? <a href="{{ url_for('signup') }}">Create one</a>! 
+      </form>
+  </div>
+{% endblock %}

@@ -1,0 +1,24 @@
+<table class="table table-hover">
+    <tr valign="top">
+      <td width="70px">
+        <a href="{{ url_for('user', nickname=post.author.nickname) }}"><img src="{{ post.author.avatar(70) }}" /></a>
+      </td>
+      <td>
+        <b><big><a href="{{ url_for('user', nickname=post.author.nickname) }}">{{ post.author.nickname }}</a></big></b> <i><small>on {{ momentjs(post.timestamp).fromNow() }}</small></i>
+        <p>{{ check_at(post.body)|safe }}</p>
+    <p>
+      <a href="{{ url_for('repost', post_id=post.id) }}">Repost</a>
+      {% if g.user.is_authenticated: %}
+          {% if g.user.is_liking(post) %}
+            | <a href="{{ url_for('dislike', post_id=post.id) }}">Dislike</a> {{ post.likers.count() }}
+          {% else %}
+            | <a href="{{ url_for('like', post_id=post.id) }}">Like</a>
+          {% endif %}
+      {% else %}
+        | <a href="{{ url_for('like', post_id=post.id) }}">Like</a>
+      {% endif %}
+      {% if g.user.id == post.author.id %}
+      | <a href="{{ url_for('delete_post', post_id=post.id) }}"><small>Delete</small></a>
+      {% endif %}
+    </p>
+</table>
